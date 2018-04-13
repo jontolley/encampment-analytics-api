@@ -27,6 +27,8 @@ namespace EncampmentAnalyticsApi.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<Subgroup> Subgroups { get; set; }
     
         public virtual ObjectResult<getCountsByAgeAndStake_Result> getCountsByAgeAndStake()
         {

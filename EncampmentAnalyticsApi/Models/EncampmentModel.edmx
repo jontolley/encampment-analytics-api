@@ -4,7 +4,39 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RegistrationDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="RegistrationDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subgroups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PinNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Subgroups_Groups_GroupId">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Subgroups" Type="Self.Subgroups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subgroups">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="getCountsByAgeAndStake" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="getCountsByAgeAndStakeAndWard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GroupId" Type="int" Mode="In" />
@@ -12,20 +44,32 @@
         <Function Name="getListOfAttendees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SubgroupId" Type="int" Mode="In" />
         </Function>
-        <EntityContainer Name="RegistrationDBModelStoreContainer" />
-      </Schema>
-    </edmx:StorageModels>
+        <EntityContainer Name="RegistrationDBModelStoreContainer">
+          <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subgroups" EntityType="Self.Subgroups" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Subgroups_Groups_GroupId" Association="Self.FK_Subgroups_Groups_GroupId">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Subgroups" EntitySet="Subgroups" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RegistrationDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="RegistrationDBEntities" annotation:LazyLoadingEnabled="true" >
           <FunctionImport Name="getCountsByAgeAndStake" ReturnType="Collection(RegistrationDBModel.getCountsByAgeAndStake_Result)" />
           <FunctionImport Name="getCountsByAgeAndStakeAndWard" ReturnType="Collection(RegistrationDBModel.getCountsByAgeAndStakeAndWard_Result)">
-            <Parameter Name="GroupId" Mode="In" Type="Int32" />
+          <Parameter Name="GroupId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="getListOfAttendees" ReturnType="Collection(RegistrationDBModel.getListOfAttendees_Result)">
-            <Parameter Name="SubgroupId" Mode="In" Type="Int32" />
+          <Parameter Name="SubgroupId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Groups" EntityType="RegistrationDBModel.Group" />
+          <EntitySet Name="Subgroups" EntityType="RegistrationDBModel.Subgroup" />
+          <AssociationSet Name="FK_Subgroups_Groups_GroupId" Association="RegistrationDBModel.FK_Subgroups_Groups_GroupId">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="Subgroup" EntitySet="Subgroups" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="getCountsByAgeAndStake_Result">
           <Property Type="String" Name="Stake" Nullable="false" MaxLength="50" />
@@ -53,6 +97,40 @@
           <Property Type="String" Name="size" Nullable="false" MaxLength="50" />
           <Property Type="Boolean" Name="triathlon" Nullable="false" />
         </ComplexType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Subgroups" Relationship="RegistrationDBModel.FK_Subgroups_Groups_GroupId" FromRole="Group" ToRole="Subgroup" />
+        </EntityType>
+        <EntityType Name="Subgroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PinNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Group" Relationship="RegistrationDBModel.FK_Subgroups_Groups_GroupId" FromRole="Subgroup" ToRole="Group" />
+        </EntityType>
+        <Association Name="FK_Subgroups_Groups_GroupId">
+          <End Type="RegistrationDBModel.Group" Role="Group" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="RegistrationDBModel.Subgroup" Role="Subgroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subgroup">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -97,6 +175,26 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="RegistrationDBModel.Group">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subgroups">
+            <EntityTypeMapping TypeName="RegistrationDBModel.Subgroup">
+              <MappingFragment StoreEntitySet="Subgroups">
+                <ScalarProperty Name="PinNumber" ColumnName="PinNumber" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

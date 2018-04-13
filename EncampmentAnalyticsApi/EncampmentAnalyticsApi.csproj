@@ -198,7 +198,13 @@
     <Compile Include="Models\getListOfAttendees_Result.cs">
       <DependentUpon>EncampmentModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Group.cs">
+      <DependentUpon>EncampmentModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RegistrationDBEntities.cs" />
+    <Compile Include="Models\Subgroup.cs">
+      <DependentUpon>EncampmentModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
