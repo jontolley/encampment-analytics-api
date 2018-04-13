@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using EncampmentAnalyticsApi.Models;
+using System.Linq;
 using System.Security.Claims;
 using System.Web.Http;
 
@@ -18,40 +19,42 @@ namespace EncampmentAnalyticsApi.Controllers
         }
 
         [HttpGet]
-        [Route("private")]
+        [Route("encampment")]
         [Authorize]
-        public IHttpActionResult Private()
+        public IHttpActionResult EncampmentCounts()
         {
-            return Json(new
-            {
-                Message = "Hello from a private endpoint! You need to be authenticated to see this."
-            });
+            var db = RegistrationDBEntities.CreateProduction();
+
+            var result = db.getCountsByAgeAndStake();
+            var viewable = result.ToList();
+
+            return Ok(viewable);
         }
 
         [HttpGet]
-        [Route("private-scoped")]
-        [ScopeAuthorize("read:messages")]
-        public IHttpActionResult Scoped()
+        [Route("encampment/stake/{id}")]
+        [Authorize]
+        public IHttpActionResult StakeCounts(int id)
         {
-            return Json(new
-            {
-                Message = "Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this."
-            });
+            var db = RegistrationDBEntities.CreateProduction();
+
+            var result = db.getCountsByAgeAndStakeAndWard(id);
+            var viewable = result.ToList();
+
+            return Ok(viewable);
         }
 
-        [Authorize]
-        [Route("claims")]
         [HttpGet]
-        public object Claims()
+        [Route("encampment/stake/ward/{id}")]
+        [Authorize]
+        public IHttpActionResult WardList(int id)
         {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var db = RegistrationDBEntities.CreateProduction();
 
-            return claimsIdentity.Claims.Select(c =>
-            new
-            {
-                Type = c.Type,
-                Value = c.Value
-            });
+            var result = db.getListOfAttendees(id);
+            var viewable = result.ToList();
+
+            return Ok(viewable);
         }
     }
 }

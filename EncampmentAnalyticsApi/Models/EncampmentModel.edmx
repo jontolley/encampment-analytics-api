@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RegistrationDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="getCountsByAgeAndStake" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="getCountsByAgeAndStakeAndWard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GroupId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="getListOfAttendees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SubgroupId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="RegistrationDBModelStoreContainer" />
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RegistrationDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="RegistrationDBEntities" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="getCountsByAgeAndStake" ReturnType="Collection(RegistrationDBModel.getCountsByAgeAndStake_Result)" />
+          <FunctionImport Name="getCountsByAgeAndStakeAndWard" ReturnType="Collection(RegistrationDBModel.getCountsByAgeAndStakeAndWard_Result)">
+            <Parameter Name="GroupId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getListOfAttendees" ReturnType="Collection(RegistrationDBModel.getListOfAttendees_Result)">
+            <Parameter Name="SubgroupId" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="getCountsByAgeAndStake_Result">
+          <Property Type="String" Name="Stake" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="C11_Yr_Old" Nullable="true" />
+          <Property Type="Int32" Name="Deacon" Nullable="true" />
+          <Property Type="Int32" Name="Teacher" Nullable="true" />
+          <Property Type="Int32" Name="Priest" Nullable="true" />
+          <Property Type="Int32" Name="Adult" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="getCountsByAgeAndStakeAndWard_Result">
+          <Property Type="String" Name="Stake" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ward" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="C11_Yr_Old" Nullable="true" />
+          <Property Type="Int32" Name="Deacon" Nullable="true" />
+          <Property Type="Int32" Name="Teacher" Nullable="true" />
+          <Property Type="Int32" Name="Priest" Nullable="true" />
+          <Property Type="Int32" Name="Adult" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="getListOfAttendees_Result">
+          <Property Type="String" Name="firstname" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="lastname" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="isadult" Nullable="false" />
+          <Property Type="Decimal" Name="age" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="DateTime" Name="dateofbirth" Nullable="true" />
+          <Property Type="String" Name="size" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="triathlon" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RegistrationDBModelStoreContainer" CdmEntityContainer="RegistrationDBEntities" >
+          <FunctionImportMapping FunctionImportName="getCountsByAgeAndStake" FunctionName="RegistrationDBModel.Store.getCountsByAgeAndStake">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RegistrationDBModel.getCountsByAgeAndStake_Result">
+                <ScalarProperty Name="Stake" ColumnName="Stake" />
+                <ScalarProperty Name="C11_Yr_Old" ColumnName="11 Yr Old" />
+                <ScalarProperty Name="Deacon" ColumnName="Deacon" />
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
+                <ScalarProperty Name="Priest" ColumnName="Priest" />
+                <ScalarProperty Name="Adult" ColumnName="Adult" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getCountsByAgeAndStakeAndWard" FunctionName="RegistrationDBModel.Store.getCountsByAgeAndStakeAndWard">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RegistrationDBModel.getCountsByAgeAndStakeAndWard_Result">
+                <ScalarProperty Name="Stake" ColumnName="Stake" />
+                <ScalarProperty Name="Ward" ColumnName="Ward" />
+                <ScalarProperty Name="C11_Yr_Old" ColumnName="11 Yr Old" />
+                <ScalarProperty Name="Deacon" ColumnName="Deacon" />
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
+                <ScalarProperty Name="Priest" ColumnName="Priest" />
+                <ScalarProperty Name="Adult" ColumnName="Adult" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getListOfAttendees" FunctionName="RegistrationDBModel.Store.getListOfAttendees">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RegistrationDBModel.getListOfAttendees_Result">
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="isadult" ColumnName="isadult" />
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="dateofbirth" ColumnName="dateofbirth" />
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="triathlon" ColumnName="triathlon" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
