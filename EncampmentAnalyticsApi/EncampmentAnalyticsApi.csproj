@@ -160,6 +160,7 @@
     <Content Include="Models\EncampmentModel.edmx.diagram">
       <DependentUpon>EncampmentModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\encampment-analytics-api - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

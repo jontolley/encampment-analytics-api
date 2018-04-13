@@ -43,6 +43,11 @@ namespace EncampmentAnalyticsApi.Models
         {
             var environmentConnectionString = Environment.GetEnvironmentVariable("connectionStrings:registrationDB_EF6", EnvironmentVariableTarget.Machine);
 
+            if (environmentConnectionString == null)
+            {
+                environmentConnectionString = ConfigurationManager.ConnectionStrings["connectionStrings:registrationDB_EF6"].ConnectionString;
+            }
+
             var connectionString = !string.IsNullOrEmpty(environmentConnectionString)
                                     ? environmentConnectionString
                                     : ConfigurationManager.ConnectionStrings["RegistrationDBEntities"].ConnectionString;
