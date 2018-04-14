@@ -56,6 +56,7 @@ namespace EncampmentAnalyticsApi.Controllers
                     Content = new StringContent(data.ToString(), Encoding.UTF8, "text/csv")
                 };
 
+                result.Content.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
                 result.Content.Headers.ContentDisposition =
                     new ContentDispositionHeaderValue("attachment")
                     {
@@ -115,6 +116,7 @@ namespace EncampmentAnalyticsApi.Controllers
                     Content = new StringContent(data.ToString(), Encoding.UTF8, "text/csv")
                 };
 
+                result.Content.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
                 result.Content.Headers.ContentDisposition =
                     new ContentDispositionHeaderValue("attachment")
                     {
@@ -155,6 +157,7 @@ namespace EncampmentAnalyticsApi.Controllers
                     Content = new StringContent(data.ToString(), Encoding.UTF8, "text/csv")
                 };
 
+                result.Content.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
                 result.Content.Headers.ContentDisposition =
                     new ContentDispositionHeaderValue("attachment")
                     {

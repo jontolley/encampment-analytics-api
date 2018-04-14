@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using Owin;
+using System.Web.Http.Cors;
 
 namespace EncampmentAnalyticsApi
 {
@@ -8,6 +9,9 @@ namespace EncampmentAnalyticsApi
         public static void Configure(IAppBuilder app)
         {
             HttpConfiguration config = new HttpConfiguration();
+
+            EnableCorsAttribute cors = new EnableCorsAttribute("https://sunrise2018.org,http://encampment.local:4200,https://encampment.azurewebsites.net", "*", "*");
+            config.EnableCors(cors);
 
             // Web API routes
             config.MapHttpAttributeRoutes();
