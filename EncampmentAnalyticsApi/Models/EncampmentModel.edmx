@@ -41,6 +41,9 @@
         <Function Name="getCountsByAgeAndStakeAndWard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GroupId" Type="int" Mode="In" />
         </Function>
+        <Function Name="getCountsByDayAndStakeAndWard" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GroupId" Type="int" Mode="In" />
+        </Function>
         <Function Name="getListOfAttendees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SubgroupId" Type="int" Mode="In" />
         </Function>
@@ -70,6 +73,9 @@
             <End Role="Group" EntitySet="Groups" />
             <End Role="Subgroup" EntitySet="Subgroups" />
           </AssociationSet>
+          <FunctionImport Name="getCountsByDayAndStakeAndWard" ReturnType="Collection(RegistrationDBModel.getCountsByDayAndStakeAndWard_Result)">
+            <Parameter Name="GroupId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getCountsByAgeAndStake_Result">
           <Property Type="String" Name="Stake" Nullable="false" MaxLength="50" />
@@ -131,6 +137,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="getCountsByDayAndStakeAndWard_Result">
+          <Property Type="String" Name="Stake" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ward" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="monday" Nullable="true" />
+          <Property Type="Int32" Name="tuesday" Nullable="true" />
+          <Property Type="Int32" Name="wednesday" Nullable="true" />
+          <Property Type="Int32" Name="thursday" Nullable="true" />
+          <Property Type="Int32" Name="friday" Nullable="true" />
+          <Property Type="Int32" Name="saturday" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -195,6 +211,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="getCountsByDayAndStakeAndWard" FunctionName="RegistrationDBModel.Store.getCountsByDayAndStakeAndWard">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RegistrationDBModel.getCountsByDayAndStakeAndWard_Result">
+                <ScalarProperty Name="Stake" ColumnName="Stake" />
+                <ScalarProperty Name="Ward" ColumnName="Ward" />
+                <ScalarProperty Name="monday" ColumnName="monday" />
+                <ScalarProperty Name="tuesday" ColumnName="tuesday" />
+                <ScalarProperty Name="wednesday" ColumnName="wednesday" />
+                <ScalarProperty Name="thursday" ColumnName="thursday" />
+                <ScalarProperty Name="friday" ColumnName="friday" />
+                <ScalarProperty Name="saturday" ColumnName="saturday" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

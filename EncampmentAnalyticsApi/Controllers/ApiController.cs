@@ -72,7 +72,7 @@ namespace EncampmentAnalyticsApi.Controllers
         [HttpGet]
         [Route("encampment/stake/{id}")]
         [Authorize]
-        public HttpResponseMessage StakeCounts(int id)
+        public HttpResponseMessage StakeCountsByAge(int id)
         {
             using (var db = RegistrationDBEntities.CreateProduction())
             {
@@ -120,7 +120,68 @@ namespace EncampmentAnalyticsApi.Controllers
                 result.Content.Headers.ContentDisposition =
                     new ContentDispositionHeaderValue("attachment")
                     {
-                        FileName = $"EncampmentRegistration_{stakeName}_{DateTime.Now.ToString("yyyy.MM.dd")}.csv"
+                        FileName = $"EncampmentRegistration_{stakeName}_ByAge_{DateTime.Now.ToString("yyyy.MM.dd")}.csv"
+                    };
+
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+
+                return result;
+            }
+        }
+
+
+        [HttpGet]
+        [Route("encampment/stake/{id}/day")]
+        [Authorize]
+        public HttpResponseMessage StakeCountsByDay(int id)
+        {
+            using (var db = RegistrationDBEntities.CreateProduction())
+            {
+                var stakeName = db.Groups.Where(g => g.Id == id).Select(g => g.Name).FirstOrDefault();
+
+                var allWards = db.getCountsByDayAndStakeAndWard(id);
+
+                var data = new StringBuilder();
+                data.Append("Stake,Ward,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday\n");
+
+                var MondayTotal = 0;
+                var TuesdayTotal = 0;
+                var WednesdayTotal = 0;
+                var ThursdayTotal = 0;
+                var FridayTotal = 0;
+                var SaturdayTotal = 0;
+
+                foreach (var row in allWards)
+                {
+                    var monday = row.monday ?? 0;
+                    var tuesday = row.tuesday ?? 0;
+                    var wednesday = row.wednesday ?? 0;
+                    var thursday = row.thursday ?? 0;
+                    var friday = row.friday ?? 0;
+                    var saturday = row.saturday ?? 0;
+                    
+                    data.Append($"{row.Stake},{row.Ward},{row.monday},{row.tuesday},{row.wednesday},{row.thursday},{row.friday},{row.saturday}\n");
+
+                    MondayTotal += row.monday ?? 0;
+                    TuesdayTotal += row.tuesday ?? 0;
+                    WednesdayTotal += row.wednesday ?? 0;
+                    ThursdayTotal += row.thursday ?? 0;
+                    FridayTotal += row.friday ?? 0;
+                    SaturdayTotal += row.saturday ?? 0;
+                }
+
+                data.Append($"Totals,,{MondayTotal},{TuesdayTotal},{WednesdayTotal},{ThursdayTotal},{FridayTotal},{SaturdayTotal}\n");
+
+                var result = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(data.ToString(), Encoding.UTF8, "text/csv")
+                };
+
+                result.Content.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+                result.Content.Headers.ContentDisposition =
+                    new ContentDispositionHeaderValue("attachment")
+                    {
+                        FileName = $"EncampmentRegistration_{stakeName}_ByDay_{DateTime.Now.ToString("yyyy.MM.dd")}.csv"
                     };
 
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");

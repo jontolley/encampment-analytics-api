@@ -52,5 +52,14 @@ namespace EncampmentAnalyticsApi.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getListOfAttendees_Result>("getListOfAttendees", subgroupIdParameter);
         }
+    
+        public virtual ObjectResult<getCountsByDayAndStakeAndWard_Result> getCountsByDayAndStakeAndWard(Nullable<int> groupId)
+        {
+            var groupIdParameter = groupId.HasValue ?
+                new ObjectParameter("GroupId", groupId) :
+                new ObjectParameter("GroupId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCountsByDayAndStakeAndWard_Result>("getCountsByDayAndStakeAndWard", groupIdParameter);
+        }
     }
 }

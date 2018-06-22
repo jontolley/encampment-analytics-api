@@ -198,6 +198,9 @@
     <Compile Include="Models\getCountsByAgeAndStake_Result.cs">
       <DependentUpon>EncampmentModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\getCountsByDayAndStakeAndWard_Result.cs">
+      <DependentUpon>EncampmentModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\getListOfAttendees_Result.cs">
       <DependentUpon>EncampmentModel.tt</DependentUpon>
     </Compile>
