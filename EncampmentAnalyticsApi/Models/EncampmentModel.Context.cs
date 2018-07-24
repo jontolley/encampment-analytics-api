@@ -44,15 +44,6 @@ namespace EncampmentAnalyticsApi.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCountsByAgeAndStakeAndWard_Result>("getCountsByAgeAndStakeAndWard", groupIdParameter);
         }
     
-        public virtual ObjectResult<getListOfAttendees_Result> getListOfAttendees(Nullable<int> subgroupId)
-        {
-            var subgroupIdParameter = subgroupId.HasValue ?
-                new ObjectParameter("SubgroupId", subgroupId) :
-                new ObjectParameter("SubgroupId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getListOfAttendees_Result>("getListOfAttendees", subgroupIdParameter);
-        }
-    
         public virtual ObjectResult<getCountsByDayAndStakeAndWard_Result> getCountsByDayAndStakeAndWard(Nullable<int> groupId)
         {
             var groupIdParameter = groupId.HasValue ?
@@ -60,6 +51,15 @@ namespace EncampmentAnalyticsApi.Models
                 new ObjectParameter("GroupId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCountsByDayAndStakeAndWard_Result>("getCountsByDayAndStakeAndWard", groupIdParameter);
+        }
+    
+        public virtual ObjectResult<getListOfAttendees_Result> getListOfAttendees(Nullable<int> subgroupId)
+        {
+            var subgroupIdParameter = subgroupId.HasValue ?
+                new ObjectParameter("SubgroupId", subgroupId) :
+                new ObjectParameter("SubgroupId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getListOfAttendees_Result>("getListOfAttendees", subgroupIdParameter);
         }
     }
 }

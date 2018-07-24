@@ -204,13 +204,14 @@ namespace EncampmentAnalyticsApi.Controllers
                 var wardAttendees = db.getListOfAttendees(id);
 
                 var data = new StringBuilder();
-                data.Append("FirstName,LastName,IsAdult,AgeDuringEncampment,DateOfBirth,ShirtSize,Triathlon\n");
+                data.Append("FirstName,LastName,IsAdult,AgeDuringEncampment,DateOfBirth,ShirtSize,Triathlon,Fee,With11YrOld\n");
 
                 foreach (var attendee in wardAttendees)
                 {
                     var isAdult = attendee.isadult ? "Yes" : "No";
                     var triathlon = attendee.triathlon ? "Yes" : "No";
-                    data.Append($"{attendee.firstname},{attendee.lastname},{isAdult},{attendee.age},{attendee.dateofbirth?.ToString("MM/dd/yyyy")},{attendee.size},{triathlon}\n");
+                    var with11YrOld = attendee.IsWithMinor ? "Yes" : "No";
+                    data.Append($"{attendee.firstname},{attendee.lastname},{isAdult},{attendee.age},{attendee.dateofbirth?.ToString("MM/dd/yyyy")},{attendee.size},{triathlon},{attendee.Fee},{with11YrOld}\n");
                 }
 
                 var result = new HttpResponseMessage(HttpStatusCode.OK)

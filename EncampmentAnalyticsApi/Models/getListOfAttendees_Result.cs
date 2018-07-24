@@ -20,5 +20,7 @@ namespace EncampmentAnalyticsApi.Models
         public Nullable<System.DateTime> dateofbirth { get; set; }
         public string size { get; set; }
         public bool triathlon { get; set; }
+        public int Fee { get; set; }
+        public bool IsWithMinor { get; set; }
     }
 }

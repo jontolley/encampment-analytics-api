@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Code\Projects\encampment-analytics-api\EncampmentAnalyticsApi\Models\EncampmentModel.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\Development\code\Visual Studio\encampment-analytics-api\EncampmentAnalyticsApi\Models\EncampmentModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
