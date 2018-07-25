@@ -47,6 +47,10 @@
         <Function Name="getListOfAttendees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SubgroupId" Type="int" Mode="In" />
         </Function>
+        <Function Name="getStakeCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="getWardCostByStake" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GroupId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="RegistrationDBModelStoreContainer">
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subgroups" EntityType="Self.Subgroups" Schema="dbo" store:Type="Tables" />
@@ -74,7 +78,11 @@
           <Parameter Name="GroupId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="getListOfAttendees" ReturnType="Collection(RegistrationDBModel.getListOfAttendees_Result)">
-            <Parameter Name="SubgroupId" Mode="In" Type="Int32" />
+          <Parameter Name="SubgroupId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getStakeCost" ReturnType="Collection(RegistrationDBModel.getStakeCost_Result)" />
+          <FunctionImport Name="getWardCostByStake" ReturnType="Collection(RegistrationDBModel.getWardCostByStake_Result)">
+            <Parameter Name="GroupId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getCountsByAgeAndStake_Result">
@@ -148,6 +156,16 @@
           <Property Type="Boolean" Name="triathlon" Nullable="false" />
           <Property Type="Int32" Name="Fee" Nullable="false" />
           <Property Type="Boolean" Name="IsWithMinor" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="getStakeCost_Result">
+          <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="totalAttending" Nullable="true" />
+          <Property Type="Int32" Name="totalCost" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="getWardCostByStake_Result">
+          <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="totalAttending" Nullable="true" />
+          <Property Type="Int32" Name="totalCost" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -226,6 +244,24 @@
                 <ScalarProperty Name="triathlon" ColumnName="triathlon" />
                 <ScalarProperty Name="Fee" ColumnName="Fee" />
                 <ScalarProperty Name="IsWithMinor" ColumnName="IsWithMinor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getStakeCost" FunctionName="RegistrationDBModel.Store.getStakeCost">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RegistrationDBModel.getStakeCost_Result">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="totalAttending" ColumnName="totalAttending" />
+                <ScalarProperty Name="totalCost" ColumnName="totalCost" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getWardCostByStake" FunctionName="RegistrationDBModel.Store.getWardCostByStake">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RegistrationDBModel.getWardCostByStake_Result">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="totalAttending" ColumnName="totalAttending" />
+                <ScalarProperty Name="totalCost" ColumnName="totalCost" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

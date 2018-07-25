@@ -61,5 +61,19 @@ namespace EncampmentAnalyticsApi.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getListOfAttendees_Result>("getListOfAttendees", subgroupIdParameter);
         }
+    
+        public virtual ObjectResult<getStakeCost_Result> getStakeCost()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getStakeCost_Result>("getStakeCost");
+        }
+    
+        public virtual ObjectResult<getWardCostByStake_Result> getWardCostByStake(Nullable<int> groupId)
+        {
+            var groupIdParameter = groupId.HasValue ?
+                new ObjectParameter("GroupId", groupId) :
+                new ObjectParameter("GroupId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getWardCostByStake_Result>("getWardCostByStake", groupIdParameter);
+        }
     }
 }

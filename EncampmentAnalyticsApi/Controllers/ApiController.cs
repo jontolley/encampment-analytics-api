@@ -70,6 +70,48 @@ namespace EncampmentAnalyticsApi.Controllers
         }
 
         [HttpGet]
+        [Route("encampment/cost")]
+        public HttpResponseMessage EncampmentCost()
+        {
+            using (var db = RegistrationDBEntities.CreateProduction())
+            {
+                var allStakes = db.getStakeCost();
+
+                var data = new StringBuilder();
+                data.Append("Stake,TotalAttending,TotalCost\n");
+
+                var AttendingTotal = 0;
+                var CostTotal = 0;
+
+                foreach (var row in allStakes)
+                {
+                    data.Append($"{row.name},{row.totalAttending},{row.totalCost}\n");
+
+                    AttendingTotal += row.totalAttending ?? 0;
+                    CostTotal += row.totalCost ?? 0;
+                }
+
+                data.Append($"Totals,{AttendingTotal},{CostTotal}\n");
+
+                var result = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(data.ToString(), Encoding.UTF8, "text/csv")
+                };
+
+                result.Content.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+                result.Content.Headers.ContentDisposition =
+                    new ContentDispositionHeaderValue("attachment")
+                    {
+                        FileName = $"EncampmentRegistration_Costs_{DateTime.Now.ToString("yyyy.MM.dd")}.csv"
+                    };
+
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+
+                return result;
+            }
+        }
+
+        [HttpGet]
         [Route("encampment/stake/{id}")]
         [Authorize]
         public HttpResponseMessage StakeCountsByAge(int id)
@@ -129,6 +171,50 @@ namespace EncampmentAnalyticsApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("encampment/stake/{id}/cost")]
+        [Authorize]
+        public HttpResponseMessage StakeCost(int id)
+        {
+            using (var db = RegistrationDBEntities.CreateProduction())
+            {
+                var stakeName = db.Groups.Where(g => g.Id == id).Select(g => g.Name).FirstOrDefault();
+
+                var allWards = db.getWardCostByStake(id);
+
+                var data = new StringBuilder();
+                data.Append("Ward,TotalAttending,TotalCost\n");
+
+                var AttendingTotal = 0;
+                var CostTotal = 0;
+
+                foreach (var row in allWards)
+                {
+                    data.Append($"{row.name},{row.totalAttending},{row.totalCost}\n");
+
+                    AttendingTotal += row.totalAttending ?? 0;
+                    CostTotal += row.totalCost ?? 0;
+                }
+
+                data.Append($"Totals,{AttendingTotal},{CostTotal}\n");
+
+                var result = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(data.ToString(), Encoding.UTF8, "text/csv")
+                };
+
+                result.Content.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+                result.Content.Headers.ContentDisposition =
+                    new ContentDispositionHeaderValue("attachment")
+                    {
+                        FileName = $"EncampmentRegistration_{stakeName}_Cost_{DateTime.Now.ToString("yyyy.MM.dd")}.csv"
+                    };
+
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+
+                return result;
+            }
+        }
 
         [HttpGet]
         [Route("encampment/stake/{id}/day")]

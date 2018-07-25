@@ -207,6 +207,12 @@
     <Compile Include="Models\getListOfAttendees_Result.cs">
       <DependentUpon>EncampmentModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\getStakeCost_Result.cs">
+      <DependentUpon>EncampmentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\getWardCostByStake_Result.cs">
+      <DependentUpon>EncampmentModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Group.cs">
       <DependentUpon>EncampmentModel.tt</DependentUpon>
     </Compile>
