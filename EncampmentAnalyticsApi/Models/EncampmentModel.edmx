@@ -77,12 +77,12 @@
           <FunctionImport Name="getCountsByDayAndStakeAndWard" ReturnType="Collection(RegistrationDBModel.getCountsByDayAndStakeAndWard_Result)">
           <Parameter Name="GroupId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="getListOfAttendees" ReturnType="Collection(RegistrationDBModel.getListOfAttendees_Result)">
-          <Parameter Name="SubgroupId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="getStakeCost" ReturnType="Collection(RegistrationDBModel.getStakeCost_Result)" />
           <FunctionImport Name="getWardCostByStake" ReturnType="Collection(RegistrationDBModel.getWardCostByStake_Result)">
-            <Parameter Name="GroupId" Mode="In" Type="Int32" />
+          <Parameter Name="GroupId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getListOfAttendees" ReturnType="Collection(RegistrationDBModel.getListOfAttendees_Result)">
+            <Parameter Name="SubgroupId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getCountsByAgeAndStake_Result">
@@ -146,17 +146,6 @@
           <Property Type="Int32" Name="friday" Nullable="true" />
           <Property Type="Int32" Name="saturday" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="getListOfAttendees_Result">
-          <Property Type="String" Name="firstname" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="lastname" Nullable="false" MaxLength="50" />
-          <Property Type="Boolean" Name="isadult" Nullable="false" />
-          <Property Type="Decimal" Name="age" Nullable="true" Precision="18" Scale="0" />
-          <Property Type="DateTime" Name="dateofbirth" Nullable="true" />
-          <Property Type="String" Name="size" Nullable="false" MaxLength="50" />
-          <Property Type="Boolean" Name="triathlon" Nullable="false" />
-          <Property Type="Int32" Name="Fee" Nullable="false" />
-          <Property Type="Boolean" Name="IsWithMinor" Nullable="false" />
-        </ComplexType>
         <ComplexType Name="getStakeCost_Result">
           <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="totalAttending" Nullable="true" />
@@ -166,6 +155,18 @@
           <Property Type="String" Name="name" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="totalAttending" Nullable="true" />
           <Property Type="Int32" Name="totalCost" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="getListOfAttendees_Result">
+          <Property Type="String" Name="firstname" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="lastname" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="isadult" Nullable="false" />
+          <Property Type="Decimal" Name="age" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="DateTime" Name="dateofbirth" Nullable="true" />
+          <Property Type="String" Name="size" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="triathlon" Nullable="false" />
+          <Property Type="Int32" Name="daysAttending" Nullable="false" />
+          <Property Type="Int32" Name="fee" Nullable="false" />
+          <Property Type="Boolean" Name="isWithMinor" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -232,21 +233,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getListOfAttendees" FunctionName="RegistrationDBModel.Store.getListOfAttendees">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="RegistrationDBModel.getListOfAttendees_Result">
-                <ScalarProperty Name="firstname" ColumnName="firstname" />
-                <ScalarProperty Name="lastname" ColumnName="lastname" />
-                <ScalarProperty Name="isadult" ColumnName="isadult" />
-                <ScalarProperty Name="age" ColumnName="age" />
-                <ScalarProperty Name="dateofbirth" ColumnName="dateofbirth" />
-                <ScalarProperty Name="size" ColumnName="size" />
-                <ScalarProperty Name="triathlon" ColumnName="triathlon" />
-                <ScalarProperty Name="Fee" ColumnName="Fee" />
-                <ScalarProperty Name="IsWithMinor" ColumnName="IsWithMinor" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="getStakeCost" FunctionName="RegistrationDBModel.Store.getStakeCost">
             <ResultMapping>
               <ComplexTypeMapping TypeName="RegistrationDBModel.getStakeCost_Result">
@@ -262,6 +248,22 @@
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="totalAttending" ColumnName="totalAttending" />
                 <ScalarProperty Name="totalCost" ColumnName="totalCost" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getListOfAttendees" FunctionName="RegistrationDBModel.Store.getListOfAttendees">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RegistrationDBModel.getListOfAttendees_Result">
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="isadult" ColumnName="isadult" />
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="dateofbirth" ColumnName="dateofbirth" />
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="triathlon" ColumnName="triathlon" />
+                <ScalarProperty Name="daysAttending" ColumnName="daysAttending" />
+                <ScalarProperty Name="fee" ColumnName="fee" />
+                <ScalarProperty Name="isWithMinor" ColumnName="isWithMinor" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
