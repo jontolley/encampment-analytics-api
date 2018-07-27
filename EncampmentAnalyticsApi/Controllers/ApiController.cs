@@ -75,23 +75,20 @@ namespace EncampmentAnalyticsApi.Controllers
         {
             using (var db = RegistrationDBEntities.CreateProduction())
             {
-                var allStakes = db.getStakeCost();
+                var allStakes = db.getStakeCost().OrderBy(s => s.name);
 
                 var data = new StringBuilder();
-                data.Append("Stake,TotalAttending,TotalCost\n");
-
-                var AttendingTotal = 0;
+                data.Append("Stake,TotalCost\n");
                 var CostTotal = 0;
 
                 foreach (var row in allStakes)
                 {
-                    data.Append($"{row.name},{row.totalAttending},{row.totalCost}\n");
-
-                    AttendingTotal += row.totalAttending ?? 0;
+                    data.Append($"{row.name},{row.totalCost}\n");
+                    
                     CostTotal += row.totalCost ?? 0;
                 }
 
-                data.Append($"Totals,{AttendingTotal},{CostTotal}\n");
+                data.Append($"Totals,{CostTotal}\n");
 
                 var result = new HttpResponseMessage(HttpStatusCode.OK)
                 {
@@ -180,23 +177,21 @@ namespace EncampmentAnalyticsApi.Controllers
             {
                 var stakeName = db.Groups.Where(g => g.Id == id).Select(g => g.Name).FirstOrDefault();
 
-                var allWards = db.getWardCostByStake(id);
+                var allWards = db.getWardCostByStake(id).OrderBy(w => w.name);
 
                 var data = new StringBuilder();
-                data.Append("Ward,TotalAttending,TotalCost\n");
-
-                var AttendingTotal = 0;
+                data.Append("Ward,TotalCost\n");
+                
                 var CostTotal = 0;
 
                 foreach (var row in allWards)
                 {
-                    data.Append($"{row.name},{row.totalAttending},{row.totalCost}\n");
-
-                    AttendingTotal += row.totalAttending ?? 0;
+                    data.Append($"{row.name},{row.totalCost}\n");
+                    
                     CostTotal += row.totalCost ?? 0;
                 }
 
-                data.Append($"Totals,{AttendingTotal},{CostTotal}\n");
+                data.Append($"Totals,{CostTotal}\n");
 
                 var result = new HttpResponseMessage(HttpStatusCode.OK)
                 {
